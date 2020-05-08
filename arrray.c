@@ -17,20 +17,20 @@ Array_ptr map(Array_ptr src, Mapper mapper)
   mapped_array->length = src->length;
   mapped_array->array = malloc(sizeof(int) * mapped_array->length);
   for (int i = 0; i < src->length; i++)
-    mapped_array->array[i] = mapper(src->array[i]);
+    mapped_array->array[i] = (*mapper)(src->array[i]);
   return mapped_array;
 }
 
 Array_ptr filter(Array_ptr src, Predicate predicate)
 {
   int length = 0;
-  int filter_array[length];
+  int filter_array[src->length];
   for (int i = 0; i < src->length; i++)
   {
-    if (predicate(src->array[i]) == True)
+    if ((*predicate)(src->array[i]))
     {
-      filter_array[++length];
-      filter_array[length - 1] = src->array[i];
+      filter_array[length] = src->array[i];
+      length++;
     }
   }
   return create_array(filter_array, length);
@@ -39,6 +39,6 @@ Array_ptr filter(Array_ptr src, Predicate predicate)
 int reduce(Array_ptr src, int init, Reducer reducer)
 {
   for (int i = 0; i < src->length; i++)
-    init = reducer(init, src->array[i]);
+    init = (*reducer)(init, src->array[i]);
   return init;
 };
