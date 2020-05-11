@@ -58,10 +58,6 @@ ArrayVoid_ptr filter_void(ArrayVoid_ptr src, PredicateVoid predicate)
 Object reduce_void(ArrayVoid_ptr src, Object init, ReducerVoid reducer)
 {
   for (int i = 0; i < src->length; i++)
-  {
-    Object to_remove = init;
     init = (*reducer)(init, src->array[i]);
-    free(to_remove);
-  }
   return init;
 };
